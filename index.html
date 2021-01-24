@@ -110,11 +110,11 @@
     }
 
     function copiarTexto() {
-      // Verificar valor
-      if( document.getElementById("resultado").value <= 0 ) return alert("Nenhum valor encontrado.");
-
       // Pega o valor
       var copyText = document.getElementById("resultado");
+
+      // Verificar valor
+      if( copyText.value <= 0 ) return alert("Nenhum valor encontrado.");
 
       // Seleciona o valor
       copyText.select();
