@@ -64,7 +64,7 @@
   <script>
     function fatiar() {
       var text = document.getElementById('texto').value;
-      var tamanho = (document.getElementById('tamanho').value > 0) ? document.getElementById('tamanho').value : 30;
+      var tamanho = parseInt( (document.getElementById('tamanho').value > 0) ? document.getElementById('tamanho').value : 30 );
       var linhas = parseInt( (document.getElementById('linhas').value > 0) ? document.getElementById('linhas').value : 0 );
       var centralizar = document.getElementById('centralizar').checked;
 
@@ -75,14 +75,15 @@
       let result = text.split('');
 
       // valor final e contator
-      var final = '', cont = 0, contLinha = 0;
+      var cont = 0, contLinha = 0;
 
       // Percorrer todo o array de letras para procurar valor vazio & se já passou do tamanho definido
       for (const [index, value] of result.entries()) {
         cont++; // crescer contator
 
         if( value == ' ' && cont >= tamanho ) {
-          final += "\n";
+
+          result[index] = '\n';
           cont = 0; // Voltar contador a zero
 
           // Aumentar contador de linhas se for defenido um valor
@@ -90,12 +91,11 @@
 
           // Adicionar linha vazia
           if( linhas > 0 && contLinha >= linhas ) {
-            final += "\n";
+            result.splice( (index+1), 0, "\n" );
             contLinha = 0;
           }
-        } else {
-          final += value;
         }
+
       }
 
       // Centralizar texto?
@@ -106,7 +106,7 @@
       }
 
       // Escrever resultado final
-      document.getElementById("resultado").innerHTML = final;
+      document.getElementById("resultado").innerHTML = result.join('');
     }
 
     function copiarTexto() {
