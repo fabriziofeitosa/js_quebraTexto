@@ -14,6 +14,15 @@
     .inputGroup {
       margin: 20px 0;
     }
+
+    #resultado {
+      border: 1px solid #000;
+      padding: 15px;
+      margin-top: 20px;
+      font-size: 18.5px;
+      font-family: Calibri;
+      margin-bottom: 100px;
+    }
   </style>
 
   <section>
@@ -24,7 +33,7 @@
   <section>
     <div class="inputGroup">
       Texto que deseja quebrar:<br>
-      <textarea id="texto" cols="80" rows="15"></textarea>
+      <textarea id="texto" cols="80" rows="8"></textarea>
     </div>
 
     <div class="inputGroup">
@@ -39,7 +48,7 @@
 
     <div class="inputGroup">
       <input type="checkbox" id="centralizar"> 
-      <label for="centralizar">Centralizar texto?</label>
+      <label for="centralizar">Ativar estilo legenda</label>
     </div>
 
     <button onclick="fatiar()">Quebrar!</button>
@@ -48,7 +57,7 @@
   <hr style="margin: 40px 0">
 
   <section>
-    Resultado:<br>
+    Resultado: <button onclick="copiarTexto()">Copiar Resultado</button><br>
     <textarea id="resultado" cols="80" rows="15"></textarea>
   </section>
 
@@ -57,6 +66,7 @@
       var text = document.getElementById('texto').value;
       var tamanho = (document.getElementById('tamanho').value > 0) ? document.getElementById('tamanho').value : 30;
       var linhas = parseInt( (document.getElementById('linhas').value > 0) ? document.getElementById('linhas').value : 0 );
+      var centralizar = document.getElementById('centralizar').checked;
 
       // Verificar valor
       if( !text ) return alert("Defina um valor para o texto!");
@@ -80,7 +90,7 @@
 
           // Adicionar linha vazia
           if( linhas > 0 && contLinha >= linhas ) {
-            final+= "\n";
+            final += "\n";
             contLinha = 0;
           }
         } else {
@@ -89,14 +99,30 @@
       }
 
       // Centralizar texto?
-      if( document.getElementById('centralizar').checked ) {
-        document.getElementById("resultado").setAttribute("style", "text-align:center;");
+      if( centralizar ) {
+        document.getElementById("resultado").setAttribute("style", "text-align:center;font-weight:bold;");
       } else {
         document.getElementById("resultado").setAttribute("style", "text-align:left;");
       }
 
       // Escrever resultado final
       document.getElementById("resultado").innerHTML = final;
+    }
+
+    function copiarTexto() {
+      // Verificar valor
+      if( document.getElementById("resultado").value <= 0 ) return alert("Nenhum valor encontrado.");
+
+      // Pega o valor
+      var copyText = document.getElementById("resultado");
+
+      // Seleciona o valor
+      copyText.select();
+      copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+      // Copia o valor
+      document.execCommand("copy");
+      alert("Copiado!");
     }
   </script>
 </body>
