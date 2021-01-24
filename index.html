@@ -7,18 +7,41 @@
 </head>
 <body>
 
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .inputGroup {
+      margin: 20px 0;
+    }
+  </style>
+
   <section>
-    <h1>Adicionador de 'quebra-linha'</h1>
-    <p>Após um número X definido pelo usuários, o texto terá a "linha quebrada".</p>
+    <h1 style="margin: 0;">Adicionador de 'quebra-linha'</h1>
+    <p style="margin: 0 0 30px">Após um número X definido pelo usuários, o texto terá a "linha quebrada".</p>
   </section>
 
   <section>
-    Texto que deseja quebrar:<br>
-    <textarea id="texto" cols="80" rows="15"></textarea>
-    <br>
-    Tamanho (o padrão é quebrar após 30 caracteres):<br>
-    <input type="text" id="tamanho" value="30">
-    <br><br>
+    <div class="inputGroup">
+      Texto que deseja quebrar:<br>
+      <textarea id="texto" cols="80" rows="15"></textarea>
+    </div>
+
+    <div class="inputGroup">
+      Tamanho (o padrão é quebrar após 30 caracteres):<br>
+      <input type="text" id="tamanho" value="30">
+    </div>
+
+    <div class="inputGroup">
+      Adicionar linha em branco a cada X linhas:<br>
+      <input type="text" id="linhas" value="0">
+    </div>
+
+    <div class="inputGroup">
+      <input type="checkbox" id="centralizar"> 
+      <label for="centralizar">Centralizar texto?</label>
+    </div>
+
     <button onclick="fatiar()">Quebrar!</button>
   </section>
 
@@ -33,6 +56,7 @@
     function fatiar() {
       var text = document.getElementById('texto').value;
       var tamanho = (document.getElementById('tamanho').value > 0) ? document.getElementById('tamanho').value : 30;
+      var linhas = parseInt( (document.getElementById('linhas').value > 0) ? document.getElementById('linhas').value : 0 );
 
       // Verificar valor
       if( !text ) return alert("Defina um valor para o texto!");
@@ -41,18 +65,34 @@
       let result = text.split('');
 
       // valor final e contator
-      var final = '';
-      var cont = 0;
+      var final = '', cont = 0, contLinha = 0;
 
       // Percorrer todo o array de letras para procurar valor vazio & se já passou do tamanho definido
       for (const [index, value] of result.entries()) {
         cont++; // crescer contator
+
         if( value == ' ' && cont >= tamanho ) {
           final += "\n";
           cont = 0; // Voltar contador a zero
+
+          // Aumentar contador de linhas se for defenido um valor
+          if( linhas > 0 ) contLinha++;
+
+          // Adicionar linha vazia
+          if( linhas > 0 && contLinha >= linhas ) {
+            final+= "\n";
+            contLinha = 0;
+          }
         } else {
           final += value;
         }
+      }
+
+      // Centralizar texto?
+      if( document.getElementById('centralizar').checked ) {
+        document.getElementById("resultado").setAttribute("style", "text-align:center;");
+      } else {
+        document.getElementById("resultado").setAttribute("style", "text-align:left;");
       }
 
       // Escrever resultado final
