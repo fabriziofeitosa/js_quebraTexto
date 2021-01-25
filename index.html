@@ -130,7 +130,7 @@
     // Carregar texto de exemplo.
     function textoExemplo() {
       var caixaTexto = $('#texto');
-      $.get( 'https://loripsum.net/api/1/verylong/plaintext', function( data ) {
+      $.get( 'https://cors-anywhere.herokuapp.com/https://loripsum.net/api/1/verylong/plaintext', function( data ) {
         caixaTexto.val( data );
       }).fail(function() {
         alert('Erro! Parece que não conseguimos carregar o que você queria...');
